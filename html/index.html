@@ -25,17 +25,14 @@
         /* 顶部导航栏 */
         .header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
-            background-color: #f0f0f0;
-            border-bottom: 1px solid #ddd;
+            padding: 10px;
         }
         
         /* 网站标题 */
         .site-title {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 28px;
+            margin-right: 20px;
             color: #333;
         }
         
@@ -48,19 +45,20 @@
         .nav-links a {
             text-decoration: none;
             color: #333;
+            font-size: 14px;
             padding: 8px 12px;
-            border-radius: 4px;
+            display: inline-block;
+            vertical-align: middle;
         }
         
         .nav-links a:hover {
-            background-color: #e0e0e0;
+            color: #0066cc;
         }
         
         /* 内容区域 */
         .content {
             max-width: 800px;
-            margin: 20px auto;
-            text-align: left;
+            margin: 20px;
         }
         
         /* 页面标题 */
@@ -95,6 +93,8 @@
             color: white;
             font-size: 14px;
             cursor: pointer;
+            display: inline-block;
+            vertical-align: middle;
         }
         
         .post-btn:hover {
@@ -196,6 +196,7 @@
     <header class="header">
         <div class="site-title">Hydrogen Forum</div>
         <nav class="nav-links">
+            <a href="./所有文章.html">所有文章</a>
             <a href="./announcement.html">公告</a>
             <a href="./about.html">关于氢论坛</a>
             <a href="./login.html">登录</a>
