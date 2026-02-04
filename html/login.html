@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <style>
+        /* 重置默认样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航栏 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .site-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            background-color: #e0e0e0;
+        }
+
+      
+
+
+        /* 表单样式 */
+        .main {
+            margin-bottom: 20px;
+        }
+
+        .main form {
+            text-align: center;
+        }
+
+        .main input {
+            width: 100%;
+            padding: 8px 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .main i {
+            margin-right: 8px;
+            color: #666;
+        }
+
+        /* 按钮样式 */
+        button {
+            padding: 4px 16px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #0d52e7;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="site-title">Hydrogen Forum</div>
+        <nav class="nav-links">
+            <a href="./index.html">回到首页</a>
+            <a href="./announcement.html">公告</a>
+            <a href="./about.html">关于</a>
+            <a href="./register.html">注册</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="header">
+            <h1>login</h1>
+        </div>
+    </div>
+    <div class="main">
+        <form>
+            <span>
+                <i class="fa fa-user"></i>
+                <input type="text" placeholder="用户名">
+                <br>
+                <i class="fa fa-lock"></i>
+                <input type="password" placeholder="密码">
+            </span>
+        </form>
+
+
+
+    </div>
+    <div class="login-actions">
+        <button type="button" onclick="login()">登录</button>
+        <button type="button" onclick="goToRegister()">注册</button>
+    </div>
+    
+    <div class="home-link">
+        
+    </div>
+    
+    <script>
+        function login() {
+            // 简单的登录功能，后续可以添加实际的登录逻辑
+            alert('登录功能正在开发中');
+        }
+        
+        function goToRegister() {
+            window.location.href = './register.html';
+        }
+    </script>
+
+
+</body>
+
+</html>
