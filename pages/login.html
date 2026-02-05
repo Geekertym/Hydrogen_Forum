@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* 重置默认样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航栏 */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .site-title {
+            font-size: 28px;
+            margin-right: 20px;
+            color: #333;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+
+
+
+
+        /* 表单样式 */
+        .main {
+            margin-bottom: 20px;
+        }
+
+        .main form {
+            text-align: center;
+        }
+
+        .main input {
+            width: 100%;
+            padding: 8px 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .main i {
+            margin-right: 8px;
+            color: #666;
+        }
+
+        /* 按钮样式 */
+        button {
+            padding: 8px 16px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 7px;
+            background-color: #346be2;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            
+
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="site-title"><i class="fa fa-comments"></i> Hydrogen Forum</div>
+        <nav class="nav-links">
+            <a href="./index.html">回到首页</a>
+            <a href="./所有文章.html">所有文章</a>
+            <a href="./announcement.html">公告</a>
+            <a href="./about.html">关于</a>
+            <a href="./register.html">注册</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="header">
+            <h1>登录</h1>
+        </div>
+    </div>
+    <div class="main">
+        <form>
+            <span>
+                <i class="fa fa-user"></i>
+                <input type="text" placeholder="用户名">
+                <br>
+                <i class="fa fa-lock"></i>
+                <input type="password" placeholder="密码">
+            </span>
+        </form>
+
+
+
+    </div>
+    <div class="login-actions">
+        <button type="button" onclick="login()">登录</button>
+        <button type="button" onclick="goToRegister()">注册</button>
+    </div>
+
+    <div class="home-link">
+
+    </div>
+
+    <script>
+        function login() {
+            // 简单的登录功能，后续可以添加实际的登录逻辑
+            alert('登录功能正在开发中');
+        }
+
+        function goToRegister() {
+            window.location.href = './register.html';
+        }
+    </script>
+
+
+</body>
+
+</html>

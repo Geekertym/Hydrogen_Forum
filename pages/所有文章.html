@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>所有文章</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* 重置默认样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            line-height: 1.6;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        
+        /* 网站标题 */
+        .site-title {
+            font-size: 28px;
+            margin-right: 20px;
+            color: #333;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+        
+        /* 内容区域 */
+        .content {
+            max-width: 800px;
+            margin: 20px;
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 33px;
+            margin-bottom: 15px;
+        }
+        
+        /* 发帖按钮样式 */
+        .post-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            background-color: #0066cc;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .post-btn:hover {
+            background-color: #0052a3;
+        }
+        
+        /* 文章列表容器 */
+        .articles-list {
+            margin-top: 20px;
+        }
+        
+        .post-item {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .post-item .post-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .post-item .post-content {
+            margin-bottom: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .post-item .post-meta {
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        
+        /* 空状态样式 */
+        .empty-state {
+            text-align: center;
+            color: #999;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="site-title"><i class="fa fa-comments"></i> Hydrogen Forum</div>
+        <nav class="nav-links">
+            <a href="./index.html">回到首页</a>
+            <a href="./announcement.html">公告</a>
+            <a href="./about.html">关于</a>
+            <a href="./register.html">注册</a>
+        </nav>
+    </header>
+    
+    <!-- 内容区域 -->
+    <main class="content">
+        <div class="page-title">
+            <span>所有文章</span>
+        </div>
+        
+        <!-- 发帖按钮 -->
+        <button id="postBtn" class="post-btn">发帖</button>
+        
+        <!-- 文章列表将通过JavaScript动态添加 -->
+        <div class="articles-list" id="articlesList">
+            <!-- 文章列表将在这里显示 -->
+        </div>
+    </main>
+    
+    <script>
+        // 页面加载时显示所有帖子
+        window.onload = function() {
+            displayAllPosts();
+        };
+        
+        // 显示所有帖子
+        function displayAllPosts() {
+            const articlesList = document.getElementById('articlesList');
+            articlesList.innerHTML = '';
+            
+            // 从本地存储获取帖子
+            let posts = JSON.parse(localStorage.getItem('hydrogenPosts') || '[]');
+            
+            // 按发布时间降序排序
+            posts.sort((a, b) => b.id - a.id);
+            
+            // 检查是否有帖子
+            if (posts.length === 0) {
+                articlesList.innerHTML = '<div class="empty-state">暂无帖子，快来发布第一篇帖子吧！</div>';
+                return;
+            }
+            
+            // 显示每个帖子
+                posts.forEach(post => {
+                    const postItem = document.createElement('div');
+                    postItem.className = 'post-item';
+                    
+                    // 简单的Markdown转义
+                    let formattedContent = post.content;
+                    // 粗体
+                    formattedContent = formattedContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    // 斜体
+                    formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                    // 换行
+                    formattedContent = formattedContent.replace(/\n/g, '<br>');
+                    
+                    // 截断内容，只显示部分
+                    const truncatedContent = formattedContent.length > 150 
+                        ? formattedContent.substring(0, 150) + '...' 
+                        : formattedContent;
+                    
+                    postItem.innerHTML = `
+                        <div class="post-title"><a href="./view-post.html?id=${post.id}" style="color: #333; text-decoration: none;">${post.title}</a></div>
+                        <div class="post-content">${truncatedContent}</div>
+                        <div class="post-meta">
+                            作者：${post.author} | 发布时间：${post.createdAt} | 浏览量：${post.views}
+                        </div>
+                    `;
+                    
+                    articlesList.appendChild(postItem);
+                });
+        }
+        
+        // 发帖按钮点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const postBtn = document.getElementById('postBtn');
+            if (postBtn) {
+                postBtn.addEventListener('click', function() {
+                    // 跳转到发帖页面
+                    window.location.href = './发帖.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

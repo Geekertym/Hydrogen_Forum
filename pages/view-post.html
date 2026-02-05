@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查看帖子 - Hydrogen Forum</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* 重置默认样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            line-height: 1.6;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        
+        /* 网站标题 */
+        .site-title {
+            font-size: 28px;
+            margin-right: 20px;
+            color: #333;
+        }
+        
+        /* 导航链接 */
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+        
+        /* 内容区域 */
+        .content {
+            max-width: 800px;
+            margin: 20px;
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 33px;
+            margin-bottom: 15px;
+        }
+        
+        /* 帖子容器 */
+        .post-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        /* 帖子标题 */
+        .post-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        /* 帖子元信息 */
+        .post-meta {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* 帖子内容 */
+        .post-content {
+            color: #333;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        
+        /* 帖子内容样式 */
+        .post-content h1 {
+            font-size: 24px;
+            margin: 20px 0 10px 0;
+        }
+        
+        .post-content h2 {
+            font-size: 22px;
+            margin: 18px 0 8px 0;
+        }
+        
+        .post-content h3 {
+            font-size: 20px;
+            margin: 16px 0 6px 0;
+        }
+        
+        .post-content p {
+            margin-bottom: 15px;
+        }
+        
+        .post-content ul, .post-content ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .post-content li {
+            margin-bottom: 5px;
+        }
+        
+        .post-content blockquote {
+            border-left: 4px solid #0066cc;
+            padding-left: 15px;
+            margin-left: 0;
+            margin-bottom: 15px;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .post-content code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            font-size: 14px;
+        }
+        
+        .post-content pre {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 15px;
+        }
+        
+        .post-content pre code {
+            padding: 0;
+            background-color: transparent;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-bottom: 20px;
+            background-color: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        
+        .back-btn:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="site-title"><i class="fa fa-comments"></i> Hydrogen Forum</div>
+        <nav class="nav-links">
+            <a href="./index.html">回到首页</a>
+            <a href="./所有文章.html">所有文章</a>
+            <a href="./announcement.html">公告</a>
+            <a href="./about.html">关于</a>
+            <a href="./login.html">登录</a>
+        </nav>
+    </header>
+    
+    <!-- 内容区域 -->
+    <main class="content">
+        <a href="./所有文章.html" class="back-btn"><i class="fa fa-arrow-left"></i> 返回所有文章</a>
+        
+        <div class="post-container">
+            <h1 class="post-title" id="postTitle">帖子标题</h1>
+            <div class="post-meta" id="postMeta">
+                <span id="postAuthor">作者</span> | <span id="postDate">发布时间</span>
+            </div>
+            <div class="post-content" id="postContent">
+                帖子内容将在这里显示
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // 页面加载时显示帖子详情
+        window.onload = function() {
+            // 获取URL参数中的帖子ID
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = parseInt(urlParams.get('id'));
+            
+            if (!postId) {
+                alert('帖子ID不存在');
+                window.location.href = './所有文章.html';
+                return;
+            }
+            
+            // 从本地存储获取帖子
+            let posts = JSON.parse(localStorage.getItem('hydrogenPosts') || '[]');
+            
+            // 查找对应的帖子
+            const post = posts.find(post => post.id === postId);
+            
+            if (!post) {
+                alert('帖子不存在');
+                window.location.href = './所有文章.html';
+                return;
+            }
+            
+            // 更新帖子浏览量
+            post.views += 1;
+            localStorage.setItem('hydrogenPosts', JSON.stringify(posts));
+            
+            // 显示帖子内容
+            document.getElementById('postTitle').textContent = post.title;
+            document.getElementById('postAuthor').textContent = `作者：${post.author}`;
+            document.getElementById('postDate').textContent = `发布时间：${post.createdAt} | 浏览量：${post.views}`;
+            
+            // 处理Markdown内容
+            const postContent = document.getElementById('postContent');
+            postContent.innerHTML = parseMarkdown(post.content);
+        };
+        
+        // 简单的Markdown解析函数
+        function parseMarkdown(content) {
+            let html = content;
+            
+            // 粗体
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            
+            // 斜体
+            html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            
+            // 三级标题
+            html = html.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+            
+            // 二级标题
+            html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+            
+            // 一级标题
+            html = html.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+            
+            // 列表
+            html = html.replace(/^- (.*$)/gm, '<li>$1</li>');
+            html = html.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+            
+            // 有序列表
+            html = html.replace(/^\d+\. (.*$)/gm, '<li>$1</li>');
+            html = html.replace(/(<li>.*<\/li>)/gs, '<ol>$1</ol>');
+            
+            // 引用
+            html = html.replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>');
+            
+            // 代码块
+            html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+            
+            // 行内代码
+            html = html.replace(/`(.*?)`/g, '<code>$1</code>');
+            
+            // 换行
+            html = html.replace(/\n/g, '<br>');
+            
+            return html;
+        }
+    </script>
+</body>
+</html>

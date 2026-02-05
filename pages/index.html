@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrogen Forum</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- 引入SimpleMDE Markdown编辑器 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <style>
+        /* 重置默认样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-bo哦有
+        }
+        
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            line-height: 1.6;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        
+        /* 网站标题 */
+        .site-title {
+            font-size: 28px;
+            margin-right: 20px;
+            color: #333;
+        }
+        
+        /* 导航链接 */
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            padding: 8px 12px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+        
+        /* 内容区域 */
+        .content {
+            max-width: 800px;
+            margin: 20px;
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 33px;
+            margin-bottom: 15px;
+        }
+        
+        /* 副标题 */
+        h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        /* 列表样式 */
+        ul {
+            margin-left: 20px;
+        }
+        
+        /* 段落样式 */
+        p {
+            margin-bottom: 10px;
+        }
+        
+        /* 发帖按钮样式 */
+        .post-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            background-color: #0066cc;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .post-btn:hover {
+            background-color: #0052a3;
+        }
+        
+        /* 发帖表单样式 */
+        .post-form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            text-align: right;
+        }
+        
+        .form-actions button {
+            padding: 8px 16px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        /* 帖子区块容器 */
+        .posts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 150px;
+            margin-top: 20px;
+        }
+        
+        /* 帖子列表区块 */
+        .posts-section {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 5px;
+        }
+        
+        .post-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        
+        .post-item:last-child {
+            border-bottom: none;
+        }
+        
+        .post-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .post-content {
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .post-meta {
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="site-title"><i class="fa fa-comments"></i> Hydrogen Forum</div>
+        <nav class="nav-links">
+            <a href="./所有文章.html">所有文章</a>
+            <a href="./announcement.html">公告</a>
+            <a href="./about.html">关于氢论坛</a>
+            <a href="./login.html">登录</a>
+        </nav>
+    </header>
+    
+    <!-- 内容区域 -->
+        <main class="content">
+            <div class="page-title">
+                <span>欢迎来到Hydrogen Forum</span>
+            </div>
+            
+            <!-- 发帖按钮 -->
+            <button id="postBtn" class="post-btn">发帖</button>
+            
+            <!-- 帖子区块容器 -->
+            <div class="posts-container">
+                <!-- 最新帖子区块 -->
+                <div class="posts-section">
+                    <h2 class="section-title">最新帖子</h2>
+                    <div class="posts-list" id="latestPosts">
+                        <!-- 最新帖子将通过JavaScript动态添加 -->
+                    </div>
+                </div>
+                
+                <!-- 最热帖子区块 -->
+                <div class="posts-section">
+                    <h2 class="section-title">最热帖子</h2>
+                    <div class="posts-list" id="hotPosts">
+                        <!-- 最热帖子将通过JavaScript动态添加 -->
+                    </div>
+                </div>
+            </div>
+    </main>
+    
+    <script>
+        // 全局变量 - markdown编辑器实例
+        let simplemde;
+        
+        // 模拟帖子数据 - 初始为空数组
+        let posts = [];
+        
+        // 页面加载时显示帖子
+        window.onload = function() {
+            // 显示最新帖子
+            displayLatestPosts();
+            
+            // 显示最热帖子
+            displayHotPosts();
+        };
+        
+        // 发帖按钮点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const postBtn = document.getElementById('postBtn');
+            if (postBtn) {
+                postBtn.addEventListener('click', function() {
+                    // 跳转到发帖页面
+                    window.location.href = './发帖.html';
+                });
+            }
+        });
+        
+        // 显示最新帖子
+        function displayLatestPosts() {
+            const latestPostsList = document.getElementById('latestPosts');
+            latestPostsList.innerHTML = '';
+            
+            // 从本地存储获取帖子
+            let posts = JSON.parse(localStorage.getItem('hydrogenPosts') || '[]');
+            
+            // 按发布时间降序排序
+            const sortedPosts = [...posts].sort((a, b) => b.id - a.id);
+            
+            if (sortedPosts.length === 0) {
+                latestPostsList.innerHTML = '<p style="text-align: center; color: #999; margin-top: 20px;">暂无帖子</p>';
+                return;
+            }
+            
+            // 只显示最新的3个帖子
+            const latest3Posts = sortedPosts.slice(0, 3);
+            
+            latest3Posts.forEach(post => {
+                createPostElement(post, latestPostsList);
+            });
+        }
+        
+        // 显示最热帖子
+        function displayHotPosts() {
+            const hotPostsList = document.getElementById('hotPosts');
+            hotPostsList.innerHTML = '';
+            
+            // 从本地存储获取帖子
+            let posts = JSON.parse(localStorage.getItem('hydrogenPosts') || '[]');
+            
+            // 按创建时间排序（暂时用这个作为热度指标）
+            const sortedPosts = [...posts].sort((a, b) => b.id - a.id);
+            
+            if (sortedPosts.length === 0) {
+                hotPostsList.innerHTML = '<p style="text-align: center; color: #999; margin-top: 20px;">暂无帖子</p>';
+                return;
+            }
+            
+            // 只显示最新的3个帖子
+            const hot3Posts = sortedPosts.slice(0, 3);
+            
+            hot3Posts.forEach(post => {
+                createPostElement(post, hotPostsList);
+            });
+        }
+        
+        // 创建帖子元素
+        function createPostElement(post, container) {
+            const postItem = document.createElement('div');
+            postItem.className = 'post-item';
+            
+            // 简单的Markdown转义
+            let formattedContent = post.content;
+            // 粗体
+            formattedContent = formattedContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // 斜体
+            formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            // 换行
+            formattedContent = formattedContent.replace(/\n/g, '<br>');
+            
+            // 截断内容，只显示部分
+            const truncatedContent = formattedContent.length > 100 
+                ? formattedContent.substring(0, 100) + '...' 
+                : formattedContent;
+            
+            postItem.innerHTML = `
+                <div class="post-title"><a href="./view-post.html?id=${post.id}" style="color: #333; text-decoration: none;">${post.title}</a></div>
+                <div class="post-content">${truncatedContent}</div>
+                <div class="post-meta">
+                    作者：${post.author} | 发布时间：${post.createdAt}
+                </div>
+            `;
+            
+            container.appendChild(postItem);
+        }
+    </script>
+</body>
+
+</html>

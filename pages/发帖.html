@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hydrogen Forum</title>
+    <title>发帖 - Hydrogen Forum</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- 引入SimpleMDE Markdown编辑器 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
@@ -18,7 +17,7 @@
         }
         
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
             line-height: 1.6;
         }
         
@@ -45,10 +44,7 @@
         .nav-links a {
             text-decoration: none;
             color: #333;
-            font-size: 14px;
-            padding: 8px 12px;
-            display: inline-block;
-            vertical-align: middle;
+            font-size: 16px;
         }
         
         .nav-links a:hover {
@@ -74,31 +70,9 @@
             font-size: 20px;
         }
         
-        /* 列表样式 */
-        ul {
-            margin-left: 20px;
-        }
-        
         /* 段落样式 */
         p {
             margin-bottom: 10px;
-        }
-        
-        /* 发帖按钮样式 */
-        .post-btn {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        
-        .post-btn:hover {
-            background-color: #45a049;
         }
         
         /* 发帖表单样式 */
@@ -107,7 +81,6 @@
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 30px;
-            display: none;
         }
         
         .form-group {
@@ -130,7 +103,7 @@
         }
         
         .form-group textarea {
-            min-height: 150px;
+            min-height: 200px;
             resize: vertical;
         }
         
@@ -148,7 +121,7 @@
         }
         
         .submit-btn {
-            background-color: #4CAF50;
+            background-color: #0066cc;
             color: white;
         }
         
@@ -156,64 +129,30 @@
             background-color: #f44336;
             color: white;
         }
-        
-        /* 帖子列表样式 */
-        .posts-list {
-            margin-top: 30px;
-        }
-        
-        .post-item {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .post-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .post-content {
-            margin-bottom: 15px;
-            color: #666;
-        }
-        
-        .post-meta {
-            font-size: 12px;
-            color: #999;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
-        }
     </style>
 </head>
-
 <body>
     <!-- 顶部导航栏 -->
     <header class="header">
-        <div class="site-title">Hydrogen Forum</div>
+        <div class="site-title"><i class="fa fa-comments"></i> Hydrogen Forum</div>
         <nav class="nav-links">
+            <a href="./index.html">回到首页</a>
             <a href="./所有文章.html">所有文章</a>
             <a href="./announcement.html">公告</a>
-            <a href="./about.html">关于氢论坛</a>
+            <a href="./about.html">关于</a>
             <a href="./login.html">登录</a>
-            <button id="postBtn" class="post-btn">发帖</button>
         </nav>
     </header>
     
     <!-- 内容区域 -->
     <main class="content">
         <div class="page-title">
-            <span>欢迎来到Hydrogen Forum</span>
+            <span>发布新帖子</span>
         </div>
         
         <!-- 发帖表单 -->
-        <div class="post-form" id="postForm">
-            <h3>发布新帖子</h3>
-            <form>
+        <div class="post-form">
+            <form id="postForm">
                 <div class="form-group">
                     <label for="postTitle">标题</label>
                     <input type="text" id="postTitle" placeholder="请输入帖子标题" required>
@@ -224,10 +163,7 @@
                     <textarea id="postContent" placeholder="请输入帖子内容，支持Markdown格式" required></textarea>
                 </div>
                 
-                <div class="form-group">
-                    <label for="postCategory">分类</label>
-                    <input type="text" id="postCategory" placeholder="请输入帖子分类（可选）">
-                </div>
+
                 
                 <div class="form-actions">
                     <button type="button" class="cancel-btn" onclick="cancelPost()">取消</button>
@@ -235,42 +171,14 @@
                 </div>
             </form>
         </div>
-        
-        <!-- 帖子列表 -->
-        <div class="posts-list" id="postsList">
-            <!-- 帖子将通过JavaScript动态添加 -->
-        </div>
     </main>
     
     <script>
         // 全局变量 - markdown编辑器实例
         let simplemde;
         
-        // 模拟帖子数据
-        let posts = [
-            {
-                id: 1,
-                title: "欢迎来到氢论坛！",
-                content: "这是氢论坛的第一篇帖子，欢迎大家积极参与讨论。",
-                category: "公告",
-                author: "管理员",
-                createdAt: new Date().toLocaleString()
-            },
-            {
-                id: 2,
-                title: "论坛使用指南",
-                content: "请大家遵守论坛规则，共同维护良好的社区环境。\n\n## 规则说明\n- 尊重他人\n- 不发布违法内容\n- 积极参与讨论",
-                category: "指南",
-                author: "管理员",
-                createdAt: new Date().toLocaleString()
-            }
-        ];
-        
-        // 页面加载时显示帖子并初始化编辑器
+        // 页面加载时初始化编辑器
         window.onload = function() {
-            // 首先显示帖子
-            displayPosts();
-            
             // 确保DOM元素加载完成后再初始化编辑器
             setTimeout(function() {
                 try {
@@ -302,23 +210,9 @@
             }, 100);
         };
         
-        // 显示发帖表单
-        document.addEventListener('DOMContentLoaded', function() {
-            const postBtn = document.getElementById('postBtn');
-            if (postBtn) {
-                postBtn.addEventListener('click', function() {
-                    const postForm = document.getElementById('postForm');
-                    if (postForm) {
-                        postForm.style.display = 'block';
-                    }
-                });
-            }
-        });
-        
         // 提交帖子
         function submitPost() {
             const title = document.getElementById('postTitle').value;
-            const category = document.getElementById('postCategory').value;
             
             // 获取编辑器内容
             const content = simplemde ? simplemde.value() : document.getElementById('postContent').value;
@@ -334,76 +228,36 @@
                 return;
             }
             
-            // 创建新帖子
+            // 创建新帖子对象
             const newPost = {
-                id: posts.length + 1,
+                id: Date.now(), // 使用时间戳作为唯一ID
                 title: title,
                 content: content,
-                category: category || '未分类',
-                author: '匿名用户', // 实际应用中应该从登录信息获取
-                createdAt: new Date().toLocaleString()
+                author: "匿名用户", // 可以根据实际登录情况修改
+                createdAt: new Date().toLocaleString(),
+                views: 0,
+                likes: 0
             };
             
-            // 添加到帖子数组
-            posts.unshift(newPost);
+            // 从本地存储获取现有帖子
+            let posts = JSON.parse(localStorage.getItem('hydrogenPosts') || '[]');
             
-            // 显示更新后的帖子列表
-            displayPosts();
+            // 添加新帖子
+            posts.push(newPost);
             
-            // 重置编辑器并隐藏表单
-            simplemde.value('');
-            document.getElementById('postTitle').value = '';
-            document.getElementById('postCategory').value = '';
-            document.getElementById('postForm').style.display = 'none';
+            // 保存到本地存储
+            localStorage.setItem('hydrogenPosts', JSON.stringify(posts));
             
-            // 提示成功
+            // 发布成功后跳转
             alert('帖子发布成功！');
+            window.location.href = './所有文章.html';
         }
         
         // 取消发帖
         function cancelPost() {
-            simplemde.value('');
-            document.getElementById('postTitle').value = '';
-            document.getElementById('postCategory').value = '';
-            document.getElementById('postForm').style.display = 'none';
-        }
-        
-        // 显示帖子列表
-        function displayPosts() {
-            const postsList = document.getElementById('postsList');
-            postsList.innerHTML = '';
-            
-            posts.forEach(post => {
-                const postItem = document.createElement('div');
-                postItem.className = 'post-item';
-                
-                // 简单的Markdown转义（实际应用中应使用专门的解析库）
-                let formattedContent = post.content;
-                // 粗体
-                formattedContent = formattedContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                // 斜体
-                formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<em>$1</em>');
-                // 三级标题
-                formattedContent = formattedContent.replace(/^### (.*$)/gm, '<h3>$1</h3>');
-                // 二级标题
-                formattedContent = formattedContent.replace(/^## (.*$)/gm, '<h2>$1</h2>');
-                // 一级标题
-                formattedContent = formattedContent.replace(/^# (.*$)/gm, '<h1>$1</h1>');
-                // 换行
-                formattedContent = formattedContent.replace(/\n/g, '<br>');
-                
-                postItem.innerHTML = `
-                    <div class="post-title">${post.title}</div>
-                    <div class="post-content">${formattedContent}</div>
-                    <div class="post-meta">
-                        分类：${post.category} | 作者：${post.author} | 发布时间：${post.createdAt}
-                    </div>
-                `;
-                
-                postsList.appendChild(postItem);
-            });
+            // 跳转到首页
+            window.location.href = './index.html';
         }
     </script>
 </body>
-
 </html>

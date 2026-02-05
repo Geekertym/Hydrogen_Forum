@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Announcement</title>
+    <title>about</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         /* 重置默认样式 */
@@ -15,7 +15,7 @@
         }
         
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
             line-height: 1.6;
         }
         
@@ -52,8 +52,7 @@
         /* 内容区域 */
         .content {
             max-width: 800px;
-            margin: 20px auto;
-            text-align: left;
+            margin: 20px;
         }
         
         /* 页面标题 */
@@ -64,7 +63,7 @@
         
         /* 副标题 */
         h3 {
-            margin-top: 20px;
+            margin-top: 10px;
             margin-bottom: 10px;
             font-size: 20px;
         }
@@ -72,6 +71,12 @@
         /* 列表样式 */
         ul {
             margin-left: 20px;
+        }
+        
+        .li {
+            font-size: 24px;
+            margin-bottom: 5px;
+            font-family: JetBrainsMono-Bold;
         }
         
         /* 段落样式 */
@@ -84,22 +89,41 @@
 <body>
     <!-- 顶部导航栏 -->
     <header class="header">
-        <div class="site-title">Hydrogen Forum</div>
+        <div class="site-title"><i class="fa fa-comments"></i> Hydrogen Forum</div>
         <nav class="nav-links">
-            <a href="./index.html">回到主页</a>
+            <a href="./index.html">回到首页</a>
             <a href="./所有文章.html">所有文章</a>
-            <a href="./about.html">关于</a>
+            <a href="./announcement.html">公告</a>
         </nav>
     </header>
     
     <!-- 内容区域 -->
     <main class="content">
         <div class="page-title">
-            <span>Hydrogen Announcement(氢公告)</span>
+            <span>About Hydrogen Forum(关于氢论坛)</span>
         </div>
+          
+        <p>首先，声明一下，本网站是本人纯手搓的，不包含任何的科技与狠活，大家放心食用。</p>
+        <p>一个轻量简洁的论坛，为了你能愉快使用，请遵守下面的论坛规则</p>
+        <p>另一个论坛：<a href="https://lforum.dpdns.org/"><b>点击这里前往</b></a></p>
         
-        <p>这里是氢论坛的公告区域。</p>
-        <p>请在此查看最新的论坛公告和重要信息。</p>
+        <h3>论坛规则</h3>
+        <ul>
+            <li class="li">尊重他人，避免恶意攻击。</li>
+            <li class="li">请勿发布违法或违规内容。</li>
+            <li class="li">遵守具体规定，维护社区秩序。</li>
+        </ul>
+        
+        <h3>发帖建议</h3>
+        <ul>
+            <li class="li">发一些源代码</li>
+            <li class="li">生活中有趣的事情</li>
+            <li class="li">学校里的***</li>
+        </ul>
+        
+        <p>我们一起维护良好的社区环境吧！</p>
+        <p>版本号:v1.0.0bata re-1</p>
+        <p>更新时间:2026年2月5日</p>
     </main>
 </body>
 
