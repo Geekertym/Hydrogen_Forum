@@ -49,8 +49,10 @@
         
         /* 内容区域 */
         .content {
-            max-width: 800px;
-            margin: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px 0;
+            padding: 0 20px;
         }
         
         /* 页面标题 */
@@ -125,7 +127,7 @@
             <a href="./index.html">回到首页</a>
             <a href="./announcement.html">公告</a>
             <a href="./about.html">关于</a>
-            <a href="./register.html">注册</a>
+            <span id="userStatus">未登录 | <a href="./login.html">登录</a></span>
         </nav>
     </header>
     
@@ -208,6 +210,31 @@
                 });
             }
         });
+    </script>
+    
+    <script>
+        // 检查用户登录状态
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('hydrogenCurrentUser'));
+            const userStatus = document.getElementById('userStatus');
+            
+            if (currentUser && userStatus) {
+                // 用户已登录
+                userStatus.innerHTML = `${currentUser.username} | <a href="javascript:logout()">登出</a>`;
+            }
+        }
+        
+        // 登出功能
+        function logout() {
+            localStorage.removeItem('hydrogenCurrentUser');
+            window.location.reload(); // 刷新页面
+        }
+        
+        // 页面加载时检查登录状态
+        window.onload = function() {
+            checkLoginStatus();
+            displayAllPosts();
+        };
     </script>
 </body>
 </html>

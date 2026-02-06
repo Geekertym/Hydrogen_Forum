@@ -50,13 +50,23 @@
 
 
 
+        /* 容器样式 */
+        .container {
+            width: 100%;
+            margin: 0;
+            padding: 0 20px;
+        }
+        
         /* 表单样式 */
         .main {
             margin-bottom: 20px;
+            width: 100%;
+            margin: 20px 0;
+            padding: 0 20px;
         }
 
         .main form {
-            text-align: center;
+            text-align: left;
         }
 
         .main input {
@@ -66,11 +76,13 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
+            display: block;
         }
-
-        .main i {
-            margin-right: 8px;
-            color: #666;
+        
+        /* 登录按钮区域 */
+        .login-actions {
+            text-align: left;
+            margin: 20px 0 20px 20px;
         }
 
         /* 按钮样式 */
@@ -109,37 +121,21 @@
     </div>
     <div class="main">
         <form>
-            <span>
-                <i class="fa fa-user"></i>
-                <input type="text" placeholder="用户名">
-                <br>
-                <i class="fa fa-lock"></i>
-                <input type="password" placeholder="密码">
-            </span>
+            <input type="text" id="username" placeholder="用户名">
+            <br>
+            <input type="password" id="password" placeholder="密码">
         </form>
-
-
-
     </div>
     <div class="login-actions">
         <button type="button" onclick="login()">登录</button>
-        <button type="button" onclick="goToRegister()">注册</button>
     </div>
 
     <div class="home-link">
 
     </div>
 
-    <script>
-        function login() {
-            // 简单的登录功能，后续可以添加实际的登录逻辑
-            alert('登录功能正在开发中');
-        }
-
-        function goToRegister() {
-            window.location.href = './register.html';
-        }
-    </script>
+    <!-- 引入论坛核心功能JavaScript -->
+    <script src="./js/forum.js"></script>
 
 
 </body>

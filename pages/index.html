@@ -27,6 +27,7 @@
             display: flex;
             align-items: center;
             padding: 10px;
+            justify-content: flex-start;
         }
         
         /* 网站标题 */
@@ -40,6 +41,7 @@
         .nav-links {
             display: flex;
             gap: 20px;
+            margin-left: 0;
         }
         
         .nav-links a {
@@ -57,14 +59,19 @@
         
         /* 内容区域 */
         .content {
-            max-width: 800px;
-            margin: 20px;
+            width: 100%;
+            margin: 20px 0;
+            padding: 0;
         }
         
         /* 页面标题 */
         .page-title {
             font-size: 33px;
             margin-bottom: 15px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            width: 100%;
+            padding-left: 40px;
         }
         
         /* 副标题 */
@@ -95,6 +102,8 @@
             cursor: pointer;
             display: inline-block;
             margin-bottom: 15px;
+            white-space: nowrap;
+            margin-left: 40px;
         }
         
         .post-btn:hover {
@@ -161,15 +170,58 @@
         .posts-container {
             display: flex;
             flex-direction: column;
-            gap: 150px;
+            gap: 20px;
             margin-top: 20px;
+            width: 100%;
+        }
+        
+        /* 响应式布局：在大屏幕上水平排列帖子区块 */
+        @media screen and (min-width: 768px) {
+            .posts-container {
+                flex-direction: row;
+                gap: 0;
+                align-items: stretch;
+                width: 100%;
+            }
+            
+            .posts-section {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                min-height: 400px;
+                width: 50%;
+                max-width: none;
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            /* 为两个模块之间添加细微的分隔线 */
+            .posts-section:first-child {
+                border-right: 1px solid #e0e0e0;
+            }
+            
+            .posts-section .posts-list {
+                flex: 1;
+            }
+        }
+        
+        /* 在小屏幕上优化显示 */
+        @media screen and (max-width: 767px) {
+            .posts-section {
+                width: 100%;
+                margin-bottom: 20px;
+            }
         }
         
         /* 帖子列表区块 */
         .posts-section {
             background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 0;
+            padding: 30px;
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            margin: 0;
         }
         
         .section-title {
@@ -183,6 +235,8 @@
         .post-item {
             border-bottom: 1px solid #eee;
             padding: 15px 0;
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .post-item:last-child {
@@ -194,6 +248,8 @@
             font-weight: bold;
             margin-bottom: 5px;
             color: #333;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         
         .post-content {
@@ -201,6 +257,8 @@
             color: #666;
             font-size: 14px;
             line-height: 1.5;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         
         .post-meta {
@@ -218,7 +276,7 @@
             <a href="./所有文章.html">所有文章</a>
             <a href="./announcement.html">公告</a>
             <a href="./about.html">关于氢论坛</a>
-            <a href="./login.html">登录</a>
+            <span id="userStatus">未登录 | <a href="./login.html">登录</a></span>
         </nav>
     </header>
     
@@ -251,19 +309,13 @@
             </div>
     </main>
     
+    <!-- 引入论坛核心功能JavaScript -->
+    <script src="./js/forum.js"></script>
     <script>
-        // 全局变量 - markdown编辑器实例
-        let simplemde;
-        
-        // 模拟帖子数据 - 初始为空数组
-        let posts = [];
-        
-        // 页面加载时显示帖子
+        // 页面加载时的初始化
         window.onload = function() {
-            // 显示最新帖子
+            checkLoginStatus();
             displayLatestPosts();
-            
-            // 显示最热帖子
             displayHotPosts();
         };
         
@@ -284,7 +336,7 @@
             latestPostsList.innerHTML = '';
             
             // 从本地存储获取帖子
-            let posts = JSON.parse(localStorage.getItem('hydrogenPosts') || '[]');
+            let posts = getAllPosts();
             
             // 按发布时间降序排序
             const sortedPosts = [...posts].sort((a, b) => b.id - a.id);
@@ -308,7 +360,7 @@
             hotPostsList.innerHTML = '';
             
             // 从本地存储获取帖子
-            let posts = JSON.parse(localStorage.getItem('hydrogenPosts') || '[]');
+            let posts = getAllPosts();
             
             // 按创建时间排序（暂时用这个作为热度指标）
             const sortedPosts = [...posts].sort((a, b) => b.id - a.id);

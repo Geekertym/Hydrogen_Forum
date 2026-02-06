@@ -53,8 +53,10 @@
         
         /* 内容区域 */
         .content {
-            max-width: 800px;
-            margin: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px 0;
+            padding: 0 20px;
         }
         
         /* 页面标题 */
@@ -212,6 +214,14 @@
         
         // 提交帖子
         function submitPost() {
+            // 检查用户是否已登录
+            const currentUser = JSON.parse(localStorage.getItem('hydrogenCurrentUser'));
+            if (!currentUser) {
+                alert('请先登录后再发帖！');
+                window.location.href = './login.html';
+                return;
+            }
+            
             const title = document.getElementById('postTitle').value;
             
             // 获取编辑器内容
@@ -223,17 +233,15 @@
                 return;
             }
             
-            if (content.length < 10) {
-                alert('内容长度不能少于10个字符');
-                return;
-            }
+            // 使用当前登录用户的用户名
+            const author = currentUser.username;
             
             // 创建新帖子对象
             const newPost = {
                 id: Date.now(), // 使用时间戳作为唯一ID
                 title: title,
                 content: content,
-                author: "匿名用户", // 可以根据实际登录情况修改
+                author: author,
                 createdAt: new Date().toLocaleString(),
                 views: 0,
                 likes: 0

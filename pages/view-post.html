@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>查看帖子 - Hydrogen Forum</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <style>
         /* 重置默认样式 */
         * {
@@ -50,8 +52,10 @@
         
         /* 内容区域 */
         .content {
-            max-width: 800px;
-            margin: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px 0;
+            padding: 0 20px;
         }
         
         /* 页面标题 */
@@ -165,6 +169,120 @@
         .back-btn:hover {
             background-color: #e0e0e0;
         }
+        
+        /* 评论区域 */
+        .comments-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .comments-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        /* 评论表单 */
+        .comment-form {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            text-align: right;
+        }
+        
+        .form-actions button {
+            padding: 8px 16px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .submit-btn {
+            background-color: #0066cc;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        /* 评论列表 */
+        .comments-list {
+            margin-bottom: 20px;
+        }
+        
+        .comment-item {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .comment-date {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .comment-content {
+            color: #333;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        /* 空状态 */
+        .empty-comments {
+            text-align: center;
+            color: #999;
+            margin: 30px 0;
+        }
     </style>
 </head>
 <body>
@@ -176,7 +294,7 @@
             <a href="./所有文章.html">所有文章</a>
             <a href="./announcement.html">公告</a>
             <a href="./about.html">关于</a>
-            <a href="./login.html">登录</a>
+            <span id="userStatus">未登录 | <a href="./login.html">登录</a></span>
         </nav>
     </header>
     
@@ -193,10 +311,141 @@
                 帖子内容将在这里显示
             </div>
         </div>
+        
+        <!-- 评论区域 -->
+        <div class="comments-section">
+            <h2 class="comments-title">评论 (<span id="commentCount">0</span>)</h2>
+            
+            <!-- 评论列表 -->
+            <div class="comments-list" id="commentsList">
+                <!-- 评论将通过JavaScript动态添加 -->
+            </div>
+            
+            <!-- 评论表单 -->
+            <div class="comment-form">
+                <h3>发表评论</h3>
+                <form id="commentForm">
+
+                    <div class="form-group">
+                        <label for="commentContent">评论内容 (支持Markdown格式)</label>
+                        <textarea id="commentContent" placeholder="请输入评论内容，支持Markdown格式" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="submit-btn" onclick="submitComment()">发布评论</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
     
     <script>
-        // 页面加载时显示帖子详情
+        // 全局变量 - markdown编辑器实例
+        let commentMDE;
+        
+        // 获取评论
+        function getComments(postId) {
+            const comments = JSON.parse(localStorage.getItem('hydrogenComments') || '[]');
+            return comments.filter(comment => comment.postId === postId);
+        }
+        
+        // 保存评论
+        function saveComments(comments) {
+            localStorage.setItem('hydrogenComments', JSON.stringify(comments));
+        }
+        
+        // 显示评论
+        function displayComments(postId) {
+            const commentsList = document.getElementById('commentsList');
+            const comments = getComments(postId);
+            
+            // 更新评论条数显示
+            const commentCountElement = document.getElementById('commentCount');
+            if (commentCountElement) {
+                commentCountElement.textContent = comments.length;
+            }
+            
+            if (comments.length === 0) {
+                commentsList.innerHTML = '<div class="empty-comments">暂无评论，快来发表第一条评论吧！</div>';
+                return;
+            }
+            
+            // 按时间升序排序
+            comments.sort((a, b) => a.id - b.id);
+            
+            commentsList.innerHTML = '';
+            comments.forEach(comment => {
+                const commentItem = document.createElement('div');
+                commentItem.className = 'comment-item';
+                
+                commentItem.innerHTML = `
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.author}</span>
+                        <span class="comment-date">${comment.createdAt}</span>
+                    </div>
+                    <div class="comment-content">${parseMarkdown(comment.content)}</div>
+                `;
+                
+                commentsList.appendChild(commentItem);
+            });
+        }
+        
+        // 提交评论
+        function submitComment() {
+            // 检查用户是否已登录
+            const currentUser = JSON.parse(localStorage.getItem('hydrogenCurrentUser'));
+            if (!currentUser) {
+                alert('请先登录后再评论！');
+                window.location.href = './login.html';
+                return;
+            }
+            
+            const content = commentMDE ? commentMDE.value() : document.getElementById('commentContent').value;
+            
+            if (!content) {
+                alert('请填写评论内容');
+                return;
+            }
+            
+            // 获取当前帖子ID
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = parseInt(urlParams.get('id'));
+            
+            if (!postId) {
+                alert('帖子ID不存在');
+                return;
+            }
+            
+            // 使用当前登录用户的用户名
+            const author = currentUser.username;
+            
+            // 创建新评论
+            const newComment = {
+                id: Date.now(),
+                postId: postId,
+                author: author,
+                content: content,
+                createdAt: new Date().toLocaleString()
+            };
+            
+            // 保存评论
+            const comments = JSON.parse(localStorage.getItem('hydrogenComments') || '[]');
+            comments.push(newComment);
+            saveComments(comments);
+            
+            // 显示评论
+            displayComments(postId);
+            
+            // 清空表单
+            if (commentMDE) {
+                commentMDE.value('');
+            } else {
+                document.getElementById('commentContent').value = '';
+            }
+            
+            alert('评论发表成功！');
+        }
+        
+        // 页面加载时初始化评论编辑器和显示帖子详情
         window.onload = function() {
             // 获取URL参数中的帖子ID
             const urlParams = new URLSearchParams(window.location.search);
@@ -232,6 +481,39 @@
             // 处理Markdown内容
             const postContent = document.getElementById('postContent');
             postContent.innerHTML = parseMarkdown(post.content);
+            
+            // 确保DOM元素加载完成后再初始化编辑器
+            setTimeout(function() {
+                try {
+                    // 初始化评论的Markdown编辑器
+                    commentMDE = new SimpleMDE({
+                        element: document.getElementById("commentContent"),
+                        autosave: {
+                            enabled: true,
+                            uniqueId: "hydrogen-forum-comment",
+                            delay: 1000,
+                        },
+                        spellChecker: false,
+                        toolbar: [
+                            "bold", "italic", "strikethrough", "heading", "|",
+                            "code", "quote", "unordered-list", "ordered-list", "|",
+                            "link", "image", "|",
+                            "side-by-side", "|",
+                            "guide"
+                        ],
+                        placeholder: "请填写评论内容，支持Markdown格式..."
+                    });
+                    
+                    console.log('评论Markdown编辑器初始化成功');
+                } catch (error) {
+                    console.error('评论Markdown编辑器初始化失败:', error);
+                    // 如果编辑器初始化失败，使用原生textarea
+                    commentMDE = null;
+                }
+            }, 100);
+            
+            // 显示评论
+            displayComments(postId);
         };
         
         // 简单的Markdown解析函数
