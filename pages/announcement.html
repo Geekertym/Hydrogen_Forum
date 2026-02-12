@@ -102,17 +102,64 @@
         
         <p>这里是氢论坛的公告区域。</p>
         <p>请在此查看最新的论坛公告和重要信息。</p>
+
+        <!-- 新增：发公告按钮 -->
+        <button id="btnNewAnnounce" style="margin-top:20px;background:#0066cc;color:#fff;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;">发公告</button>
+        
+        <!-- 新增：公告列表区域 -->
+        <div id="announcementList" style="margin-top:30px;">
+            <!-- 公告将通过JavaScript动态加载 -->
+        </div>
+
     </main>
     
     <script>
+        // 新增：加载并显示公告
+        function loadAnnouncements() {
+            const announcements = JSON.parse(localStorage.getItem('hydrogenAnnouncements') || '[]');
+            const announcementList = document.getElementById('announcementList');
+            
+            // 按日期降序排序
+            announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            if (announcements.length === 0) {
+                announcementList.innerHTML = '<p>暂无公告</p>';
+                return;
+            }
+            
+            let html = '';
+            announcements.forEach(announcement => {
+                const date = new Date(announcement.date).toLocaleString();
+                html += `
+                <div style="border:1px solid #ddd;border-radius:8px;padding:20px;margin-bottom:20px;">
+                    <h3 style="margin-bottom:10px;">${announcement.title}</h3>
+                    <div style="color:#666;margin-bottom:10px;">发布者: ${announcement.author} | 发布时间: ${date}</div>
+                    <div class="announcement-content">${marked.parse(announcement.content)}</div>
+                </div>
+                `;
+            });
+            
+            announcementList.innerHTML = html;
+        }
+        
         // 检查用户登录状态
         function checkLoginStatus() {
             const currentUser = JSON.parse(localStorage.getItem('hydrogenCurrentUser'));
             const userStatus = document.getElementById('userStatus');
+            const btnNewAnnounce = document.getElementById('btnNewAnnounce');
             
             if (currentUser && userStatus) {
                 // 用户已登录
                 userStatus.innerHTML = `${currentUser.username} | <a href="javascript:logout()">登出</a>`;
+                // 显示发公告按钮（这里可以根据实际需求添加权限控制）
+                if (btnNewAnnounce) {
+                    btnNewAnnounce.style.display = 'block';
+                }
+            } else {
+                // 用户未登录，隐藏发公告按钮
+                if (btnNewAnnounce) {
+                    btnNewAnnounce.style.display = 'none';
+                }
             }
         }
         
@@ -122,11 +169,25 @@
             window.location.reload(); // 刷新页面
         }
         
-        // 页面加载时检查登录状态
+        // 跳转到发布公告页面
+        function goToNewAnnouncement() {
+            window.location.href = './new-announcement.html';
+        }
+        
+        // 页面加载时检查登录状态并加载公告
         window.onload = function() {
             checkLoginStatus();
+            // 绑定按钮点击事件
+            const btnNewAnnounce = document.getElementById('btnNewAnnounce');
+            if (btnNewAnnounce) {
+                btnNewAnnounce.addEventListener('click', goToNewAnnouncement);
+            }
+            // 加载公告
+            loadAnnouncements();
         };
     </script>
+    <!-- 引入marked.js用于Markdown渲染 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 
 </html>

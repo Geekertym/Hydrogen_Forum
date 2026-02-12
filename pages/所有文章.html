@@ -50,7 +50,7 @@
         /* 内容区域 */
         .content {
             width: 100%;
-            max-width: 1200px;
+            /* 移除 max-width: 1200px; */
             margin: 20px 0;
             padding: 0 20px;
         }
@@ -89,6 +89,8 @@
             padding: 15px;
             margin-bottom: 15px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            /* 新增：让卡片宽度自动撑满父容器 */
+            width: 100%;
         }
         
         .post-item .post-title {
@@ -147,12 +149,13 @@
     </main>
     
     <script>
-        // 页面加载时显示所有帖子
-        window.onload = function() {
-            displayAllPosts();
+        // 页面加载时统一初始化
+        window.onload = function () {
+            checkLoginStatus();   // ① 先更新登录状态
+            displayAllPosts();    // ② 再渲染帖子列表
         };
-        
-        // 显示所有帖子
+
+        // 显示所有帖子（原逻辑，无需改动）
         function displayAllPosts() {
             const articlesList = document.getElementById('articlesList');
             articlesList.innerHTML = '';
@@ -199,42 +202,44 @@
                     articlesList.appendChild(postItem);
                 });
         }
-        
-        // 发帖按钮点击事件
-        document.addEventListener('DOMContentLoaded', function() {
+
+        // 发帖按钮点击事件（原逻辑，无需改动）
+        document.addEventListener('DOMContentLoaded', function () {
             const postBtn = document.getElementById('postBtn');
             if (postBtn) {
-                postBtn.addEventListener('click', function() {
-                    // 跳转到发帖页面
+                postBtn.addEventListener('click', function () {
                     window.location.href = './发帖.html';
                 });
             }
         });
     </script>
-    
+
     <script>
-        // 检查用户登录状态
+        // 检查用户登录状态（原逻辑，无需改动）
         function checkLoginStatus() {
             const currentUser = JSON.parse(localStorage.getItem('hydrogenCurrentUser'));
             const userStatus = document.getElementById('userStatus');
-            
+
             if (currentUser && userStatus) {
-                // 用户已登录
                 userStatus.innerHTML = `${currentUser.username} | <a href="javascript:logout()">登出</a>`;
             }
         }
-        
-        // 登出功能
+
+        // 登出功能（原逻辑，无需改动）
         function logout() {
-            localStorage.removeItem('hydrogenCurrentUser');
-            window.location.reload(); // 刷新页面
+            if (confirm('你确定要退出登录吗？')) {
+                localStorage.removeItem('hydrogenCurrentUser');
+                window.location.reload();
+            }
         }
-        
-        // 页面加载时检查登录状态
+
+        // ！！！ 删除下面这段重复的 window.onload，避免覆盖
+        /*
         window.onload = function() {
             checkLoginStatus();
             displayAllPosts();
         };
+        */
     </script>
 </body>
 </html>

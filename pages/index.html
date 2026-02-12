@@ -40,14 +40,14 @@
         /* 导航链接 */
         .nav-links {
             display: flex;
-            gap: 20px;
+            gap: 30px;
             margin-left: 0;
         }
         
         .nav-links a {
             text-decoration: none;
             color: #333;
-            font-size: 14px;
+            font-size: 16px;
             padding: 8px 12px;
             display: inline-block;
             vertical-align: middle;
@@ -265,6 +265,11 @@
             font-size: 12px;
             color: #999;
         }
+
+        /* 添加倒计时数字样式 */
+        .countdown-number {
+            color: orange;
+        }
     </style>
 </head>
 
@@ -284,6 +289,11 @@
         <main class="content">
             <div class="page-title">
                 <span>欢迎来到Hydrogen Forum</span>
+            </div>
+            
+            <!-- 春季倒计时 -->
+            <div class="countdown" style="font-size: 18px; color: #666; margin-left: 40px; margin-bottom: 15px;">
+                <span id="springFestivalCountdown" style="font-weight: bold;">2026年春节倒计时: </span>
             </div>
             
             <!-- 发帖按钮 -->
@@ -317,7 +327,38 @@
             checkLoginStatus();
             displayLatestPosts();
             displayHotPosts();
+            startSpringFestivalCountdown(); // 添加倒计时初始化
         };
+        
+        // 春季倒计时功能
+        function startSpringFestivalCountdown() {
+            const countdownElement = document.getElementById('springFestivalCountdown');
+            if (!countdownElement) return;
+            
+            const springFestival = new Date('2026-02-17T00:00:00');
+            
+            function updateCountdown() {
+                const now = new Date();
+                const diff = springFestival - now;
+                
+                if (diff <= 0) {
+                    countdownElement.innerHTML = '<span class="countdown-number">2026愿你"策马扬鞭"再奋蹄，"一马当先"创佳绩</span>';
+                    return;
+                }
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                countdownElement.innerHTML = `2026年春节倒计时: <span class="countdown-number">${days}天 ${hours}时 ${minutes}分 ${seconds}秒</span>`;
+            }
+            
+            // 立即更新一次
+            updateCountdown();
+            // 每秒更新一次
+            setInterval(updateCountdown, 1000);
+        }
         
         // 发帖按钮点击事件
         document.addEventListener('DOMContentLoaded', function() {

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布公告 - Hydrogen Forum</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- 移除Markdown编辑器相关CSS -->
+    <!-- 移除marked库引用 -->
+    <style>
+        /* 重置默认样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            line-height: 1.6;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        
+        /* 网站标题 */
+        .site-title {
+            font-size: 28px;
+            margin-right: 20px;
+            color: #333;
+        }
+        
+        /* 导航链接 */
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+        
+        /* 内容区域 */
+        .content {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 33px;
+            margin-bottom: 20px;
+        }
+        
+        /* 表单样式 */
+        .announcement-form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: #0066cc;
+            color: #fff;
+        }
+        
+        .btn-secondary {
+            background: #999;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="site-title"><i class="fa fa-comments"></i> Hydrogen Forum</div>
+        <nav class="nav-links">
+            <a href="./index.html">回到主页</a>
+            <a href="./所有文章.html">所有文章</a>
+            <a href="./announcement.html">公告</a>
+            <a href="./about.html">关于</a>
+            <span id="userStatus">未登录 | <a href="./login.html">登录</a></span>
+        </nav>
+    </header>
+    
+    <!-- 内容区域 -->
+    <main class="content">
+        <div class="page-title">
+            <span>发布新公告</span>
+        </div>
+        
+        <form class="announcement-form">
+            <div class="form-group">
+                <label for="announcementTitle">公告标题</label>
+                <input type="text" id="announcementTitle" placeholder="请输入公告标题" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="announcementContent">公告内容</label>
+                <!-- 修改为普通文本框 -->
+                <textarea id="announcementContent" rows="15" placeholder="请输入公告内容..."></textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='./announcement.html'">取消</button>
+                <button type="submit" class="btn btn-primary">发布公告</button>
+            </div>
+        </form>
+    </main>
+    
+    <!-- 移除SimpleMDE相关脚本 -->
+    <script>
+        // 移除Markdown编辑器初始化代码
+        
+        // 检查用户登录状态
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('hydrogenCurrentUser'));
+            const userStatus = document.getElementById('userStatus');
+            
+            if (currentUser && userStatus) {
+                userStatus.innerHTML = `${currentUser.username} | <a href="javascript:logout()">登出</a>`;
+            } else {
+                window.location.href = './login.html';
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('hydrogenCurrentUser');
+            window.location.reload();
+        }
+        
+        // 修改表单提交处理
+        document.querySelector('.announcement-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('announcementTitle').value;
+            const content = document.getElementById('announcementContent').value; // 直接获取文本内容
+            
+            const announcements = JSON.parse(localStorage.getItem('hydrogenAnnouncements') || '[]');
+            announcements.push({
+                id: Date.now(),
+                title: title,
+                content: content,  // 保存纯文本内容
+                author: JSON.parse(localStorage.getItem('hydrogenCurrentUser')).username,
+                date: new Date().toISOString()
+            });
+            
+            localStorage.setItem('hydrogenAnnouncements', JSON.stringify(announcements));
+            window.location.href = './announcement.html';
+        });
+        
+        window.onload = function() {
+            checkLoginStatus();
+        };
+    </script>
+</body>
+
+</html>
