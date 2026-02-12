@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,68 +16,69 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: "Microsoft YaHei", Arial, sans-serif;
             line-height: 1.6;
         }
-        
+
         /* 顶部导航栏 */
         .header {
             display: flex;
             align-items: center;
             padding: 10px;
         }
-        
+
         /* 网站标题 */
         .site-title {
             font-size: 28px;
             margin-right: 20px;
             color: #333;
         }
-        
+
         /* 导航链接 */
         .nav-links {
             display: flex;
             gap: 20px;
         }
-        
+
         .nav-links a {
             text-decoration: none;
             color: #333;
             font-size: 16px;
         }
-        
+
         .nav-links a:hover {
             color: #0066cc;
         }
-        
+
         /* 内容区域 */
         .content {
             width: 100%;
-            max-width: 1200px;
-            margin: 20px 0;
+
+            max-width: 1000px; /* 增加最大宽度，使输入框横向更大 */
+            margin: 20px auto; /* 将左右margin改为auto实现水平居中 */
             padding: 0 20px;
         }
-        
+
         /* 页面标题 */
         .page-title {
             font-size: 33px;
             margin-bottom: 15px;
         }
-        
+
         /* 副标题 */
         h3 {
             margin-top: 20px;
             margin-bottom: 10px;
             font-size: 20px;
         }
-        
+
         /* 段落样式 */
         p {
             margin-bottom: 10px;
         }
-        
+
         /* 发帖表单样式 */
         .post-form {
             background-color: #f9f9f9;
@@ -84,17 +86,17 @@
             border-radius: 8px;
             margin-bottom: 30px;
         }
-        
+
         .form-group {
             margin-bottom: 15px;
         }
-        
+
         .form-group label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
-        
+
         .form-group input[type="text"],
         .form-group textarea {
             width: 100%;
@@ -103,16 +105,16 @@
             border-radius: 4px;
             font-size: 14px;
         }
-        
+
         .form-group textarea {
             min-height: 200px;
             resize: vertical;
         }
-        
+
         .form-actions {
             text-align: right;
         }
-        
+
         .form-actions button {
             padding: 8px 16px;
             margin-left: 10px;
@@ -121,18 +123,19 @@
             font-size: 14px;
             cursor: pointer;
         }
-        
+
         .submit-btn {
             background-color: #0066cc;
             color: white;
         }
-        
+
         .cancel-btn {
             background-color: #f44336;
             color: white;
         }
     </style>
 </head>
+
 <body>
     <!-- 顶部导航栏 -->
     <header class="header">
@@ -145,13 +148,13 @@
             <a href="./login.html">登录</a>
         </nav>
     </header>
-    
+
     <!-- 内容区域 -->
     <main class="content">
         <div class="page-title">
             <span>发布新帖子</span>
         </div>
-        
+
         <!-- 发帖表单 -->
         <div class="post-form">
             <form id="postForm">
@@ -159,14 +162,14 @@
                     <label for="postTitle">标题</label>
                     <input type="text" id="postTitle" placeholder="请输入帖子标题" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="postContent">内容 (支持Markdown格式)</label>
                     <textarea id="postContent" placeholder="请输入帖子内容，支持Markdown格式" required></textarea>
                 </div>
-                
 
-                
+
+
                 <div class="form-actions">
                     <button type="button" class="cancel-btn" onclick="cancelPost()">取消</button>
                     <button type="button" class="submit-btn" onclick="submitPost()">发布</button>
@@ -174,15 +177,15 @@
             </form>
         </div>
     </main>
-    
+
     <script>
         // 全局变量 - markdown编辑器实例
         let simplemde;
-        
+
         // 页面加载时初始化编辑器
-        window.onload = function() {
+        window.onload = function () {
             // 确保DOM元素加载完成后再初始化编辑器
-            setTimeout(function() {
+            setTimeout(function () {
                 try {
                     // 初始化SimpleMDE编辑器
                     simplemde = new SimpleMDE({
@@ -202,7 +205,7 @@
                         ],
                         placeholder: "请输入帖子内容，支持Markdown格式..."
                     });
-                    
+
                     console.log('Markdown编辑器初始化成功');
                 } catch (error) {
                     console.error('Markdown编辑器初始化失败:', error);
@@ -211,7 +214,7 @@
                 }
             }, 100);
         };
-        
+
         // 提交帖子
         function submitPost() {
             // 检查用户是否已登录
@@ -221,21 +224,21 @@
                 window.location.href = './login.html';
                 return;
             }
-            
+
             const title = document.getElementById('postTitle').value;
-            
+
             // 获取编辑器内容
             const content = simplemde ? simplemde.value() : document.getElementById('postContent').value;
-            
+
             // 表单验证
             if (!title || !content) {
                 alert('请填写标题和内容');
                 return;
             }
-            
+
             // 使用当前登录用户的用户名
             const author = currentUser.username;
-            
+
             // 创建新帖子对象
             const newPost = {
                 id: Date.now(), // 使用时间戳作为唯一ID
@@ -246,21 +249,21 @@
                 views: 0,
                 likes: 0
             };
-            
+
             // 从本地存储获取现有帖子
             let posts = JSON.parse(localStorage.getItem('hydrogenPosts') || '[]');
-            
+
             // 添加新帖子
             posts.push(newPost);
-            
+
             // 保存到本地存储
             localStorage.setItem('hydrogenPosts', JSON.stringify(posts));
-            
+
             // 发布成功后跳转
             alert('帖子发布成功！');
             window.location.href = './所有文章.html';
         }
-        
+
         // 取消发帖
         function cancelPost() {
             // 跳转到首页
@@ -268,4 +271,5 @@
         }
     </script>
 </body>
+
 </html>
