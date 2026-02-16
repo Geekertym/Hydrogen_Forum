@@ -1,3 +1,22 @@
 {
     "livePreview.defaultPreviewPath": "c:\\Users\\tangyinming\\Desktop\\Hydrogen_Forum\\pages\\发帖.html"
 }
+{
+  // 基础动画开关 
+  "workbench.enableExperiments": true,      // 启用实验性动画（部分特效需此选项）
+  "window.titleBarStyle": "custom",         // 允许更流畅的窗口动画（Windows/macOS）
+ 
+  // 编辑器动画 
+  "editor.cursorSmoothCaretAnimation": "on",        // 光标平滑移动
+  "editor.smoothScrolling": true,                   // 编辑器平滑滚动
+  "editor.occurrencesHighlight": "animated",        // 高亮匹配项时使用动画
+ 
+  // 工作区动画
+  "workbench.list.smoothScrolling": true,           // 文件列表/侧边栏动画 
+  "workbench.tree.renderIndentGuides": "always",    // 缩进参考线动画 
+  "explorer.decorations.colors": true,              // 文件图标颜色动画 
+ 
+  // 终端动画 
+  "terminal.integrated.gpuAcceleration": "on",      // GPU加速终端渲染 
+  "terminal.integrated.cursorBlinking": "phase"     // 终端光标闪烁动画
+}
